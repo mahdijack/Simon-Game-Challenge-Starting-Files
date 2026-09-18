@@ -41,42 +41,56 @@ $(".btn").on("click", function keyclick() {
 
 
 let clickValue = [];
+let indexColer = 0;
 
 $(".btn").on("click", function (event) {
 
-    const color = event.target.id;
+    const color = $(this).attr("id");
 
     clickValue.push(color);
+
     console.log(clickValue);
+
+    if (clickValue[indexColer] === gamePattern[indexColer]) {
+
+        console.log("Correct!");
+        indexColer++;
+        if (indexColer === gamePattern.length){
+            console.log("Level Complete!");
+        }
+    } else {
+        $(document).addClass(".game-over");
+    }
 });
 
 
 
 let gamePattern = [];
 function colorsPick() {
-    const colors = ["blue", "yellow", "red", "green"];
+    let colors = ["blue", "yellow", "red", "green"];
 
-
-    const picking = Math.floor(Math.random() * 4);
+    let picking = Math.floor(Math.random() * 4);
     gamePattern.push(colors[picking]);
 
-    const randomColor = $("#" + gamePattern[gamePattern.length - 1]);
+    let randomColor = $("#" + gamePattern[gamePattern.length - 1]);
+    let pickedColor = gamePattern[gamePattern.length - 1];
     console.log(randomColor);
 
+    randomColor.addClass("pressed");
+    setTimeout(() => {
+    randomColor.removeClass("pressed");
+}, 100);
+    const audioPicked = new Audio(`sounds/${pickedColor}.mp3`);
+    audioPicked.play();
 
+    if (indexColer === gamePattern.length){
 
-    let colorPicked = randomColor.addClass("pressed");
-    let audioPicked = Audio().play;
-
-
-
-
-
+    }
+    
     return gamePattern;
 }
 colorsPick();
-colorsPick();
-colorsPick();
+
 console.log(gamePattern);
 
 
