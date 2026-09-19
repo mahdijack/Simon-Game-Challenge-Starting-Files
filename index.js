@@ -1,6 +1,20 @@
-$(".btn").on("click", function keyclick() {
+let clickValue = [];
+let indexColer = 0;
+let gamePattern = [];
+let colors = ["blue", "yellow", "red", "green"];
+let started = false;
+
+
+// ====================
+// User Click
+// ====================
+
+$(".btn").on("click", function () {
+
     let key = $(this).attr("id");
+
     switch (key) {
+
         case "blue":
             new Audio("sounds/blue.mp3").play();
             $(".blue").addClass("pressed");
@@ -39,58 +53,72 @@ $(".btn").on("click", function keyclick() {
 });
 
 
+// ====================
+// Check User Answer
+// ====================
 
-let clickValue = [];
-let indexColer = 0;
-
-$(".btn").on("click", function (event) {
-
+$(".btn").on("click", function () {
     const color = $(this).attr("id");
-
     clickValue.push(color);
-
     console.log(clickValue);
 
     if (clickValue[indexColer] === gamePattern[indexColer]) {
-
         console.log("Correct!");
         indexColer++;
-        if (indexColer === gamePattern.length){
+
+        if (indexColer === gamePattern.length) {
             console.log("Level Complete!");
         }
     } else {
-        $(document).addClass(".game-over");
+        startOver();
     }
+
 });
 
 
+// ====================
+// Pick Random Color
+// ====================
 
-let gamePattern = [];
 function colorsPick() {
-    let colors = ["blue", "yellow", "red", "green"];
-
-    let picking = Math.floor(Math.random() * 4);
+    const picking = Math.floor(Math.random() * colors.length);
     gamePattern.push(colors[picking]);
 
-    let randomColor = $("#" + gamePattern[gamePattern.length - 1]);
-    let pickedColor = gamePattern[gamePattern.length - 1];
-    console.log(randomColor);
+    const pickedColor = gamePattern[gamePattern.length - 1];
+    const randomColor = $("#" + pickedColor);
 
+    console.log(randomColor);
     randomColor.addClass("pressed");
+
     setTimeout(() => {
-    randomColor.removeClass("pressed");
-}, 100);
-    const audioPicked = new Audio(`sounds/${pickedColor}.mp3`);
+        randomColor.removeClass("pressed");
+    }, 100);
+
+    const audioPicked = new Audio(
+        "sounds/" + pickedColor + ".mp3"
+    );
     audioPicked.play();
 
-    if (indexColer === gamePattern.length){
-
-    }
-    
     return gamePattern;
 }
+
+
+// ====================
+// Start Game
+// ====================
+
 colorsPick();
 
 console.log(gamePattern);
 
 
+// ====================
+// Game Over
+// ====================
+
+function startOver() {
+    indexColer = 0;
+    gamePattern = [];
+    clickValue = [];
+    started = false;
+}
