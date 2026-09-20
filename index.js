@@ -385,44 +385,136 @@
 // }
 
 
+
 let getValue = [];
+
 let gamePatern = [];
-let colers = ["red", "blue", "green", "yellow"];
+
+let colors = ["red", "blue", "green", "yellow"];
+
 let level = 0;
-let stared = false;
+
+let started = false;
+
 
 $(document).keypress(function () {
-    level++;
-    $("#level-title").text("Level " + level);
-    nextClick();
-    stared = true;
+
+    if (!started) {
+
+        started = true;
+
+        nextSequeense();
+
+    }
+
 });
 
 
 $(".btn").click(function () {
+
     let idValue = this.id;
+
+    // ذخیره انتخاب کاربر
+    getValue.push(idValue);
+
+    // پخش صدای دکمه
     let soundValue = new Audio("sounds/" + idValue + ".mp3");
+
     soundValue.play();
 
+    // افکت دکمه
     $("#" + idValue).addClass("pressed");
+
     setTimeout(function () {
+
         $("#" + idValue).removeClass("pressed");
+
     }, 100);
 
-    console.log(idValue);
+    // بررسی جواب
+    checkAnswer(getValue.length - 1);
+
 });
 
-function GetClickValue (){
-    $("")
+
+function checkAnswer(Curentlevel) {
+
+    // جواب درست است
+    if (gamePatern[Curentlevel] === getValue[Curentlevel]) {
+
+        // اگر کاربر کل مرحله را درست زده
+        if (getValue.length === gamePatern.length) {
+
+            // انتخاب‌های کاربر برای مرحله بعد پاک می‌شوند
+            getValue = [];
+
+            // یک ثانیه صبر و سپس مرحله بعد
+            setTimeout(function () {
+
+                nextSequeense();
+
+            }, 1000);
+
+        }
+
+    } else {
+
+        // جواب اشتباه
+        let soundValue = new Audio("sounds/wrong.mp3");
+
+        soundValue.play();
+
+        $("body").addClass("game-over");
+
+        $("#level-title").text("Game Over, Press Any Key to Restart");
+
+        setTimeout(function () {
+
+            $("body").removeClass("game-over");
+
+        }, 200);
+
+        startOver();
+
+    }
+
 }
 
-function nextSequeense(curentLevel){
+
+function nextSequeense() {
+
+    level++;
+
+    $("#level-title").text("Level " + level);
+
+    // انتخاب رنگ تصادفی
+    let randomNumber = Math.floor(Math.random() * 4);
+
+    let randomColer = colors[randomNumber];
+
+    // اضافه کردن رنگ به Pattern
+    gamePatern.push(randomColer);
+
+    // نمایش رنگ جدید به کاربر
+    $("#" + randomColer).fadeOut(100).fadeIn(100);
+
+    // پخش صدای رنگ
+    let soundValue = new Audio("sounds/" + randomColer + ".mp3");
+
+    soundValue.play();
 
 }
 
 
 function startOver() {
+
     gamePatern = [];
+
+    getValue = [];
+
     level = 0;
-    stared = false;
+
+    started = false;
+
 }
+
