@@ -387,22 +387,42 @@
 
 let getValue = [];
 let gamePatern = [];
-let colers = ["red","blue","green","yellow"];
-let level = 0 ; 
-let stared = false ; 
-let idValue = 
+let colers = ["red", "blue", "green", "yellow"];
+let level = 0;
+let stared = false;
 
-$(document).keypress(function () { 
-    level ++;
+$(document).keypress(function () {
+    level++;
     $("#level-title").text("Level " + level);
     nextClick();
-    stared = true ;
+    stared = true;
 });
 
 
+$(".btn").click(function () {
+    let idValue = this.id;
+    let soundValue = new Audio("sounds/" + idValue + ".mp3");
+    soundValue.play();
 
-function startOver(){
+    $("#" + idValue).addClass("pressed");
+    setTimeout(function () {
+        $("#" + idValue).removeClass("pressed");
+    }, 100);
+
+    console.log(idValue);
+});
+
+function GetClickValue (){
+    $("")
+}
+
+function nextSequeense(curentLevel){
+
+}
+
+
+function startOver() {
     gamePatern = [];
     level = 0;
-    stared= false ; 
+    stared = false;
 }
